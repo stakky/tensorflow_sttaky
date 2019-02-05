@@ -2867,6 +2867,8 @@ tf_kernel_library(
 cc_library(
     name = "math",
     deps = [
+        ":string_add",
+        ":hello",
         ":aggregate_ops",
         ":argmax_op",
         ":batch_matmul_op",
@@ -2887,6 +2889,18 @@ cc_library(
         ":segment_reduction_ops",
         ":sequence_ops",
     ],
+)
+
+tf_kernel_library(
+    name = "string_add",
+    prefix = "string_add",
+    deps = MATH_DEPS,
+)
+
+tf_kernel_library(
+    name = "hello",
+    prefix = "hello",
+    deps = MATH_DEPS,
 )
 
 tf_kernel_library(

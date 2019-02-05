@@ -1667,4 +1667,24 @@ inputs: Must all be the same size and shape.
 
 #endif  // INTEL_MKL
 
+REGISTER_OP("StringAdd")
+    .Input("x: string")
+    .Input("y: string")
+    .Output("z: int32")
+    .SetShapeFn([](InferenceContext* c) {
+      // The inputs 'x' and 'y' must have the same shape.
+      ShapeHandle data_x = c->input(0);
+      ShapeHandle data_y = c->input(1);
+      TF_RETURN_IF_ERROR(c->Merge(data_x, data_y, &data_x));
+      return shape_inference::UnchangedShape(c);
+    });
+
+REGISTER_OP("Hello")
+    .Output("hello: string")
+    .SetShapeFn([](InferenceContext* c) {
+	ShapeHandle scalar = c->Scalar();
+	c->set_output(0, scalar);
+	return Status::OK();
+    });
+
 }  // namespace tensorflow
